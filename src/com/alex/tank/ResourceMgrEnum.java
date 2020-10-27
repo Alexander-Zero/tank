@@ -3,20 +3,17 @@ package com.alex.tank;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
 
-/**
- * 三种较好的写法
- * 1:双重检查
- * 2:静态内部类
- * 3:枚举单例
- */
-public class ResourceMgr {
 
-    //需加上volatile
-    private static volatile ResourceMgr INSTANCE;
+//枚举单例,感觉很吊的样子
+public enum ResourceMgrEnum {
+    INSTANCE;
+    private BufferedImage goodTankL, goodTankR, goodTankU, goodTankD;
+    private BufferedImage badTankL, badTankR, badTankU, badTankD;
+    private BufferedImage bulletL, bulletU, bulletR, bulletD;
+    private BufferedImage[] explodes = new BufferedImage[16];
 
-    private ResourceMgr() {
+    ResourceMgrEnum() {
         try {
             goodTankU = ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/goodTank1.png"));
             goodTankD = ImageUtil.rotateImage(goodTankU, 180);
@@ -42,35 +39,6 @@ public class ResourceMgr {
             e.printStackTrace();
         }
     }
-
-    //双重检查
-    public static ResourceMgr getInstance() {
-        if (INSTANCE == null) {
-            synchronized (ResourceMgr.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new ResourceMgr();
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
-
-    //静态内部类
-    private static class ResourceMgrHolder {
-        private static final ResourceMgr INSTANCE = new ResourceMgr();
-    }
-
-    //静态内部类
-    public static ResourceMgr getInstance2() {
-        return ResourceMgrHolder.INSTANCE;
-    }
-
-
-    private BufferedImage goodTankL, goodTankR, goodTankU, goodTankD;
-    private BufferedImage badTankL, badTankR, badTankU, badTankD;
-    private BufferedImage bulletL, bulletU, bulletR, bulletD;
-    private BufferedImage[] explodes = new BufferedImage[16];
 
 
     public BufferedImage getGoodTankL() {

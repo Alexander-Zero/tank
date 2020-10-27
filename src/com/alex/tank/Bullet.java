@@ -1,11 +1,14 @@
 package com.alex.tank;
 
+import org.w3c.dom.css.Rect;
+
 import java.awt.*;
 
 public class Bullet {
     private static final int SPEED = 3;
-    public static final int HEIGHT = ResourceMgr.bulletD.getHeight();
-    public static final int WIDTH = ResourceMgr.bulletD.getWidth();
+    public static final int HEIGHT = ResourceMgr.getInstance().getBulletD().getHeight();
+    public static final int WIDTH = ResourceMgr.getInstance().getBulletD().getWidth();
+    Rectangle rect = new Rectangle();
 
     private TankFrame tankFrame;
     private boolean living = true;
@@ -20,6 +23,10 @@ public class Bullet {
         this.dir = dir;
         this.group = group;
         this.tankFrame = tankFrame;
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     public void paint(Graphics g) {
@@ -29,16 +36,16 @@ public class Bullet {
         }
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.bulletL, x, y, null);
+                g.drawImage(ResourceMgr.getInstance().getBulletL(), x, y, null);
                 break;
             case UP:
-                g.drawImage(ResourceMgr.bulletU, x, y, null);
+                g.drawImage(ResourceMgr.getInstance().getBulletU(), x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.bulletR, x, y, null);
+                g.drawImage(ResourceMgr.getInstance().getBulletR(), x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.bulletD, x, y, null);
+                g.drawImage(ResourceMgr.getInstance().getBulletD(), x, y, null);
                 break;
         }
 
@@ -64,6 +71,10 @@ public class Bullet {
                 y += SPEED;
                 break;
         }
+
+        rect.x = this.x;
+        rect.y = this.y;
+
         if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
             living = false;
         }
@@ -72,6 +83,7 @@ public class Bullet {
 
     /**
      * 碰撞检测
+     *
      * @param tank
      */
     public void collideWith(Tank tank) {
@@ -84,7 +96,9 @@ public class Bullet {
         if (bulletRect.intersects(tankRect)) {
             tank.die();
             die();
-            Explode explode = new Explode(this.x, this.y, this.tankFrame);
+            int ex = tank.getX() + Tank.WIGHT / 2 - Bullet.WIDTH;
+            int ey = tank.getY() + Tank.HEIGHT / 2 - Bullet.HEIGHT;
+            Explode explode = new Explode(ex, ey, this.tankFrame);
             tankFrame.explodes.add(explode);
         }
     }

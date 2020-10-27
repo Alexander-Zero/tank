@@ -3,8 +3,8 @@ package com.alex.tank;
 import java.awt.*;
 
 public class Explode {
-    public static int WIDTH = ResourceMgr.explodes[0].getWidth();
-    public static int HEIGH = ResourceMgr.explodes[0].getHeight();
+    public static int WIDTH = ResourceMgr.getInstance().getExplodes()[0].getWidth();
+    public static int HEIGH = ResourceMgr.getInstance().getExplodes()[0].getHeight();
     int x, y;
     private boolean living = true;
     TankFrame tankFrame;
@@ -21,10 +21,10 @@ public class Explode {
             tankFrame.explodes.remove(this);
             return;
         }
-        g.drawImage(ResourceMgr.explodes[step++], x, y, null);
-        Audio audio = new Audio("audio/explode.wav");
-        audio.play();
-        if (step >= ResourceMgr.explodes.length) {
+        g.drawImage(ResourceMgr.getInstance2().getExplodes()[step++], x, y, null);
+//        Audio audio = new Audio("audio/explode.wav");
+//        audio.play();
+        if (step >= ResourceMgr.getInstance2().getExplodes().length) {
             step = 0;
             this.living = false;
         }

@@ -40,6 +40,7 @@ public class TankFrame extends Frame {
     //绘图,Graphics 画笔
     @Override
     public void paint(Graphics g) {
+
         //我方坦克
         tank.paint(g);
 
@@ -60,9 +61,10 @@ public class TankFrame extends Frame {
             }
         }
 
-        for(int i = 0;i<explodes.size();i++){
+        for (int i = 0; i < explodes.size(); i++) {
             explodes.get(i).paint(g);
         }
+        g.drawString("子弹数量:" + bullets.size(), 50, 50);
 //        explode.paint(g);
     }
 
